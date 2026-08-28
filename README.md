@@ -1,4 +1,4 @@
-# AI Prompt Coach 🚀
+# AI Prompt Coach 
 
 A lightweight desktop tool that enhances your writing in real-time using Google Gemini AI. Select text anywhere, press a hotkey, and get instant grammar fixes or prompt enhancements.
 
