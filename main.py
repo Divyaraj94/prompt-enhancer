@@ -71,10 +71,12 @@ def main():
 
     print(f"\n[{hk_grammar.upper()}] Grammar  |  [{hk_prompt.upper()}] Prompt  |  [{hk_mix.upper()}] Mix")
     print(f"Settings: {SETTINGS_FILE}")
-    print("Press 'esc' to exit.\n")
+    print("Press Ctrl+C in this terminal to exit.\n")
 
     try:
-        keyboard.wait('esc')
+        # Wait forever. (Previously this waited for 'esc', but pressing Esc 
+        # during normal computer use would accidentally kill the app)
+        keyboard.wait()
     except KeyboardInterrupt:
         pass
     finally:

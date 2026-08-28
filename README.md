@@ -1,4 +1,4 @@
-# AI Prompt Coach 
+# AI Prompt Coach 🚀
 
 A lightweight desktop tool that enhances your writing in real-time using Google Gemini AI. Select text anywhere, press a hotkey, and get instant grammar fixes or prompt enhancements.
 
@@ -17,13 +17,16 @@ A lightweight desktop tool that enhances your writing in real-time using Google 
    pip install keyboard pyperclip pyautogui google-generativeai
    ```
 
-2. Add your Google Gemini API key in `main.py`
+2. Add your Google Gemini API key via environment variable:
+   ```bash
+   set GEMINI_API_KEY=your_api_key_here
+   ```
 
 3. Run the app:
    ```bash
    python main.py
    ```
-   Or double-click `Start_AI_Coach.bat`
+   Or create a `Start_AI_Coach.bat` launcher.
 
 ## How to Use
 
