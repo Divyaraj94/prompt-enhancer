@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+Start_AI_Coach.bat
