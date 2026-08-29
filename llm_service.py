@@ -18,12 +18,25 @@ class LLMService:
             )
 
         genai.configure(api_key=api_key)
-        # gemini-2.5-flash-lite: optimized for speed, no thinking overhead
-        self._model = genai.GenerativeModel('gemini-2.5-flash-lite')
+        # Using gemini-2.5-flash as it has a larger free-tier quota (1500/day) than lite
+        self._model = genai.GenerativeModel('gemini-2.5-flash')
         # Generation config: low temperature for accuracy, limited tokens for speed
         self._gen_config = genai.types.GenerationConfig(
             temperature=0.3,
             max_output_tokens=1024,
+        )
+
+    def _get_model_for_mode(self, mode: str):
+        if mode == 'grammar':
+            sys_instruct = "You are a professional editor. Fix grammar, spelling, and punctuation only. Reply with ONLY the improved text. Do not add conversational filler or explanations."
+        elif mode == 'prompt':
+            sys_instruct = "You are an expert prompt engineer. Rewrite the user's input as a detailed, clear AI prompt. Improve structure and vocabulary. Reply with ONLY the improved prompt."
+        else:
+            sys_instruct = "You are a professional editor. Fix grammar, improve clarity, and make the writing more professional and concise. Reply with ONLY the improved text."
+
+        return genai.GenerativeModel(
+            model_name='gemini-2.5-flash',
+            system_instruction=sys_instruct
         )
 
     def enhance_text(self, original_text: str, mode: str = 'mix') -> str:
@@ -31,21 +44,10 @@ class LLMService:
         if not original_text.strip():
             return original_text 
 
-        if mode == 'grammar':
-            instruction = "Fix grammar, spelling, and punctuation only. Keep the original tone and vocabulary."
-        elif mode == 'prompt':
-            instruction = "Rewrite this as a detailed, clear AI prompt. Improve structure and vocabulary."
-        else:
-            instruction = "Fix grammar, improve clarity, and make the writing more professional and concise."
-
-        prompt = (
-            f"{instruction}\n"
-            "Reply with ONLY the improved text, nothing else.\n\n"
-            f"{original_text}"
-        )
+        model = self._get_model_for_mode(mode)
 
         try:
-            response = self._model.generate_content(prompt, generation_config=self._gen_config)
+            response = model.generate_content(original_text, generation_config=self._gen_config)
             return response.text.strip()
         except genai.types.BlockedPromptException as e:
             raise RuntimeError(f"LLM API blocked the prompt/response due to safety concerns: {e}")
