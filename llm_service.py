@@ -35,7 +35,7 @@ class LLMService:
             sys_instruct = "You are a professional editor. Fix grammar, improve clarity, and make the writing more professional and concise. Reply with ONLY the improved text."
 
         return genai.GenerativeModel(
-            model_name='gemini-2.5-flash',
+            model_name='gemini-1.5-flash',
             system_instruction=sys_instruct
         )
 
